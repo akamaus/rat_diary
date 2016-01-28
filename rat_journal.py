@@ -3,7 +3,7 @@ import re
 
 class TracePoint:
     def __repr__(self):
-        return "TP<t=" + self.time + ";r=" + self.room + ";e="+ str(self.events) + ">"
+        return "TP<t=" + str(self.time) + ";r=" + self.room + ";e="+ str(self.events) + ">"
     def __str__(self):
         return __repr__()
 
@@ -12,10 +12,14 @@ def parse_trace(tr):
     statements = arr_re.split(tr)
     trace = []
     for s in statements:
-        time_num_re = re.compile("([\d:]+)\((\w)\)")
+        time_num_re = re.compile("(\+?)(\d+):(\d+)+\((\w)\)")
         m = time_num_re.match(s)
-        time = m.group(1)
-        room = m.group(2)
+        time = int(m.group(2)) * 60 + int(m.group(3))
+        if m.group(1) == '+':
+            time = time + trace[-1].time
+
+        room = m.group(4)
+
         events_str = s[m.span()[1]:]
         event_re = re.compile("\[(\w+)\]")
         events = event_re.findall(events_str)
