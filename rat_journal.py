@@ -33,13 +33,19 @@ def parse_trace(tr):
 
 class Measure:
     def __repr__(self):
-        return "M<date=" + time.strftime("%Y-%m-%d", self.date) + ";cage=" + str(self.cage) + ";rat="+ str(self.rat) + ";trace="+ str(self.trace) + ">"
+        return "M<date=" + time.strftime("%Y-%m-%d", self.date) + \
+                    ";room_cont=" + str(self.room_contents) + \
+                    ";cage=" + str(self.cage) + \
+                    ";rat=" + str(self.rat) + \
+                    ";trace="+ str(self.trace) + ">"
     def __str__(self):
         return self.__repr__()
 
 class Journal:
     cur_date = None
     cur_cage = None
+    room_contents = [None,None]
+
     measures = []
 
     def add_measure(self, m):
@@ -54,11 +60,17 @@ class Journal:
         m.cage = self.cur_cage
         m.rat = self.rat_id
         m.trace = parse_trace(tr)
-
+        m.room_contents = self.room_contents[:]
         self.add_measure(m)
 
 def date(date_str):
     Journal.cur_date = time.strptime(date_str, "%Y-%m-%d")
+
+def room1(thing):
+    Journal.room_contents[0] = thing
+
+def room2(thing):
+    Journal.room_contents[1] = thing
 
 def cage(n):
     Journal.cur_cage = n
