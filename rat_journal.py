@@ -28,7 +28,7 @@ def parse_trace(tr):
         tp.room = room
         tp.events = events
         trace.append(tp)
-    print(tr, "parsed as " ,trace)
+#    print(tr, "parsed as " ,trace)
     return trace
 
 class Measure:
