@@ -41,18 +41,44 @@ class Measure:
     def __str__(self):
         return self.__repr__()
 
+class CookieFinding:
+    def __repr__(self):
+        return "CF<date=" + time.strftime("%Y-%m-%d", self.date) + \
+                    ";rat=" + str(self.rat) + \
+                    ";time="+ str(self.time) + ">"
+    def __str__(self):
+        return self.__repr__()
+
 class Journal:
     cur_date = None
     cur_cage = None
-    room_contents = [None,None]
 
+    def __init__(self, rat_id):
+        self.rat_id = rat_id
+
+    # cookie finding test
+    cookie_findings = []
+    def found_cookie_at(self,time_arg):
+        res = CookieFinding()
+        res.date = self.cur_date
+        res.rat = self.rat_id
+        if isinstance(time_arg, str):
+            time_re = re.compile("(\d+):(\d+)")
+            m = time_re.match(time_arg)
+            res.time = int(m.group(1)) * 60 + int(m.group(2))
+        elif isinstance(time_arg, int):
+            res.time = time_arg
+        else:
+            res.time = None
+        self.cookie_findings.append(res)
+
+    # T-labirinth test
+
+    room_contents = [None,None]
     measures = []
 
     def add_measure(self, m):
         self.measures.append(m)
-
-    def __init__(self, rat_id):
-        self.rat_id = rat_id
 
     def trace(self, tr):
         m = Measure()

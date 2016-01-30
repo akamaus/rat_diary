@@ -4,10 +4,11 @@ def rats():
     return set(map(lambda(m): m.rat, Journal.measures))
 
 
-def filter_rat(rat_id):
+def filter_rat_measures(rat_id):
     return filter(lambda(m): m.rat == rat_id, Journal.measures)
 
-
+def filter_rat_findings(rat_id):
+    return filter(lambda(m): m.rat == rat_id, Journal.cookie_findings)
 
 def search_time(measure):
     for tp in measure.trace:
